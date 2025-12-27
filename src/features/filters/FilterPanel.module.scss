@@ -1,0 +1,17 @@
+.panel {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+button {
+  padding: 8px 16px;
+  border: 1px solid #ccc;
+  background: white;
+  cursor: pointer;
+}
+
+.active {
+  background: #007bff;
+  color: white;
+}
