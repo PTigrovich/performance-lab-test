@@ -1,13 +1,10 @@
-import React from 'react'
+import ProductsPage from './pages/ProductsPage/ProductsPage'
 import styles from './App.module.scss'
 
 function App() {
   return (
     <div className={styles.app}>
-      <header className={styles.header}>Performance Lab Test App</header>
-      <div className={styles.content}>
-        <p>Здесь будет грид с товарами и фильтры</p>
-      </div>
+      <ProductsPage />
     </div>
   )
 }
