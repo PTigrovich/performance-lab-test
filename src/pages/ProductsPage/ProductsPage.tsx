@@ -7,6 +7,9 @@ import { setCategory } from '../../features/filters/filtersSlice'
 import { Category } from '../../entities/product/types'
 import ProductsGrid from '../../features/products/ProductsGrid'
 
+import { toggleCart } from '../../features/cart/cartSlice'
+import CartSidebar from '../../features/cart/CartSidebar'
+
 const ProductsPage = () => {
   const dispatch = useDispatch()
   const [searchParams] = useSearchParams()
@@ -22,6 +25,10 @@ const ProductsPage = () => {
     <div>
       <FilterPanel />
       <ProductsGrid />
+		<button onClick={() => dispatch(toggleCart())}>
+  			Открыть корзину
+		</button>
+		<CartSidebar />
     </div>
   )
 }
