@@ -5,6 +5,7 @@ import { useSearchParams } from 'react-router-dom'
 import FilterPanel from '../../features/filters/FilterPanel'
 import { setCategory } from '../../features/filters/filtersSlice'
 import { Category } from '../../entities/product/types'
+import ProductsGrid from '../../features/products/ProductsGrid'
 
 const ProductsPage = () => {
   const dispatch = useDispatch()
@@ -20,7 +21,7 @@ const ProductsPage = () => {
   return (
     <div>
       <FilterPanel />
-      {/* здесь будет грид товаров */}
+      <ProductsGrid />
     </div>
   )
 }
