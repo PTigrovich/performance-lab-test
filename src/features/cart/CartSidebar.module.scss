@@ -1,21 +1,22 @@
 .sidebar {
   position: fixed;
   top: 0;
-  right: -300px;
-  width: 300px;
-  height: 100vh;
-  background: white;
-  border-left: 1px solid #ddd;
-  padding: 16px;
-  transition: right 0.3s ease;
+  right: -320px;
+  width: 320px;
+  height: 100%;
+  background-color: var(--color-white);
+  box-shadow: -8px 0 24px rgba(0, 0, 0, 0.1);
+  padding: 24px;
 }
+
 
 .open {
   right: 0;
 }
 
 .item {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 8px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 70px 32px;
+  align-items: center;
+  gap: 12px;
 }

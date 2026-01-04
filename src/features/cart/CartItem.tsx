@@ -17,8 +17,8 @@ const CartItem = memo(({ item }: Props) => {
 
   return (
     <div className={styles.item}>
-      <span>{item.title}</span>
-      <span>x{item.quantity}</span>
+      <span className={styles.title}>{item.title}</span>
+      <span className={styles.quantity}>x{item.quantity}</span>
       <button onClick={() => dispatch(removeFromCart(item.id))}>
         ✕
       </button>

@@ -1,7 +1,7 @@
 import { useDispatch } from 'react-redux'
 import { addToCart } from '../cart/cartSlice'
 import { Product } from '../../entities/product/types'
-import styles from './ProductsGrid.module.scss'
+import styles from './ProductCard.module.scss'
 
 interface Props {
   product: Product

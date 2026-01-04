@@ -11,30 +11,36 @@ import { Category } from '../../entities/product/types'
 
 import { toggleCart } from '../../features/cart/cartSlice'
 import CartSidebar from '../../features/cart/CartSidebar'
+import styles from './ProductsPage.module.scss'
 
 const ProductsPage = () => {
   const dispatch = useDispatch()
-  const [searchParams] = useSearchParams()
+  const [searchParams, setSearchParams] = useSearchParams()
 
-  const category = useSelector(
-    (state: RootState) => state.filters.category
-  )
+  const category = useSelector((state: RootState) => state.filters.category)
+  const page = useSelector((state: RootState) => state.products.page)
 
-  // URL восстанавливаем из категории
+  // 1️⃣ Восстановление состояния из URL при заходе
   useEffect(() => {
     const categoryFromUrl = searchParams.get('category') as Category | null
-    if (categoryFromUrl) {
-      dispatch(setCategory(categoryFromUrl))
-    }
+    const pageFromUrl = parseInt(searchParams.get('page') || '1', 10)
+
+    if (categoryFromUrl) dispatch(setCategory(categoryFromUrl))
+    if (!isNaN(pageFromUrl)) dispatch(setPage(pageFromUrl))
   }, [dispatch, searchParams])
 
-  // смена категории- сброс страницы до 1
+  // 2️⃣ Сброс страницы при смене категории
   useEffect(() => {
     dispatch(setPage(1))
   }, [category, dispatch])
 
+  // 3️⃣ Синхронизация store -> URL
+  useEffect(() => {
+    setSearchParams({ category, page: String(page) })
+  }, [category, page, setSearchParams])
+
   return (
-    <div>
+    <div className={styles.page}>
       <FilterPanel />
       <ProductsGrid />
 
@@ -48,3 +54,4 @@ const ProductsPage = () => {
 }
 
 export default ProductsPage
+
