@@ -1,8 +1,6 @@
 import { useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useAppDispatch, useAppSelector } from '../../app/hooks'
 import { useSearchParams } from 'react-router-dom'
-
-import { RootState } from '../../app/store'
 import FilterPanel from '../../features/filters/FilterPanel'
 import ProductsGrid from '../../features/products/ProductsGrid'
 import { setCategory } from '../../features/filters/filtersSlice'
@@ -13,14 +11,20 @@ import { toggleCart } from '../../features/cart/cartSlice'
 import CartSidebar from '../../features/cart/CartSidebar'
 import styles from './ProductsPage.module.scss'
 
+
+
 const ProductsPage = () => {
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
   const [searchParams, setSearchParams] = useSearchParams()
 
-  const category = useSelector((state: RootState) => state.filters.category)
-  const page = useSelector((state: RootState) => state.products.page)
+  const category = useAppSelector(state => state.filters.category)
+  const page = useAppSelector(state => state.products.page)
 
-  // 1️⃣ Восстановление состояния из URL при заходе
+  const handleToggleCart = () => {
+    dispatch(toggleCart());
+  }
+
+  // Восстановление состояния из URL при заходе
   useEffect(() => {
     const categoryFromUrl = searchParams.get('category') as Category | null
     const pageFromUrl = parseInt(searchParams.get('page') || '1', 10)
@@ -29,12 +33,12 @@ const ProductsPage = () => {
     if (!isNaN(pageFromUrl)) dispatch(setPage(pageFromUrl))
   }, [dispatch, searchParams])
 
-  // 2️⃣ Сброс страницы при смене категории
+  // Сброс страницы при смене категории
   useEffect(() => {
     dispatch(setPage(1))
   }, [category, dispatch])
 
-  // 3️⃣ Синхронизация store -> URL
+  // Синхронизация store -> URL
   useEffect(() => {
     setSearchParams({ category, page: String(page) })
   }, [category, page, setSearchParams])
@@ -44,9 +48,9 @@ const ProductsPage = () => {
       <FilterPanel />
       <ProductsGrid />
 
-      <button onClick={() => dispatch(toggleCart())}>
-        Открыть корзину
-      </button>
+      <button onClick={handleToggleCart}>
+  			Открыть корзину
+		</button>
 
       <CartSidebar />
     </div>

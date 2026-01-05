@@ -1,7 +1,8 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Product } from '../../entities/product/types';
 import { mockProducts } from './mockProducts';
 
+export type SortOrder = 'asc' | 'desc';
 interface ProductsState {
     items: Product[];
     page: number;
@@ -20,17 +21,16 @@ const productsSlice = createSlice({
     name: 'products',
     initialState,
     reducers: {
-        setPage(state, action) {
+        setPage(state, action: PayloadAction<number>) {
             state.page = action.payload;
         },
         toggleSortOrder(state) {
             state.sortOrder = state.sortOrder === 'asc' ? 'desc' : 'asc';
-            state.page = 1; // сбрасываем страницу — важный UX момент
+            state.page = 1; // сбрасываем страницу
         },
     },
 });
 
 
-export type SortOrder = 'asc' | 'desc';
 export const { setPage, toggleSortOrder } = productsSlice.actions;
 export default productsSlice.reducer;

@@ -1,35 +1,35 @@
-import { useDispatch, useSelector } from 'react-redux'
+import { useAppDispatch, useAppSelector } from '../../app/hooks'
 import { useSearchParams } from 'react-router-dom'
-import { RootState } from '../../app/store'
 import { setCategory } from './filtersSlice'
 import { Category } from '../../entities/product/types'
+import { CATEGORIES, CATEGORY_LABELS } from '../../entities/product/constants'
 import styles from './FilterPanel.module.scss'
 
-const categories: { label: string; value: Category }[] = [
-  { label: 'Еда', value: 'food' },
-  { label: 'Одежда', value: 'clothes' },
-  { label: 'Электроника', value: 'electronics' },
+const categories: Category[] = [
+  CATEGORIES.FOOD,
+  CATEGORIES.CLOTHES,
+  CATEGORIES.ELECTRONICS,
 ]
 
 const FilterPanel = () => {
-  const dispatch = useDispatch()
-  const category = useSelector((state: RootState) => state.filters.category)
+  const dispatch = useAppDispatch()
+  const category = useAppSelector(state => state.filters.category)
   const [, setSearchParams] = useSearchParams()
 
-  const onSelectCategory = (value: Category) => {
+  const handleSelectCategory = (value: Category) => {
     dispatch(setCategory(value))
     setSearchParams({ category: value })
   }
 
   return (
     <div className={styles.panel}>
-      {categories.map((cat) => (
+      {categories.map(categoryValue => (
         <button
-          key={cat.value}
-          onClick={() => onSelectCategory(cat.value)}
-          className={category === cat.value ? styles.active : ''}
+          key={categoryValue}
+          onClick={() => handleSelectCategory(categoryValue)}
+          className={category === categoryValue ? styles.active : ''}
         >
-          {cat.label}
+          {CATEGORY_LABELS[categoryValue]}
         </button>
       ))}
     </div>

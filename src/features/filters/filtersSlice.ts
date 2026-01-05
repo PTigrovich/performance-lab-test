@@ -1,12 +1,12 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Category } from '../../entities/product/types';
-
+import { CATEGORIES } from '../../entities/product/constants';
 interface FiltersState {
     category: Category;
 }
 
 const initialState: FiltersState = {
-    category: 'food',
+   category: CATEGORIES.FOOD,
 };
 
 const filtersSlice = createSlice({

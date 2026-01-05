@@ -1,57 +1,48 @@
-import { useDispatch, useSelector } from 'react-redux'
-import { RootState } from '../../app/store'
+import { useAppDispatch, useAppSelector } from '../../app/hooks'
 import ProductCard from './ProductCard'
-import { setPage } from './productsSlice'
+import { setPage, toggleSortOrder } from './productsSlice'
+import Pagination from '../pagination/Pagination'
 import styles from './ProductsGrid.module.scss'
-import { toggleSortOrder } from './productsSlice'
 
 const ProductsGrid = () => {
-  const dispatch = useDispatch()
-  const { items, page, limit, sortOrder } = useSelector(
-  (state: RootState) => state.products
-  )
-  const category = useSelector(
-    (state: RootState) => state.filters.category
-  )
-  
+  const dispatch = useAppDispatch()
+  const { items, page, limit, sortOrder } = useAppSelector((state) => state.products)
+  const category = useAppSelector((state) => state.filters.category)
 
   const filtered = items.filter((p) => p.category === category)
+  const sorted = [...filtered].sort((a, b) =>
+    sortOrder === 'asc' ? a.title.localeCompare(b.title) : b.title.localeCompare(a.title)
+  )
 
-const sorted = [...filtered].sort((a, b) => {
-  if (sortOrder === 'asc') {
-    return a.title.localeCompare(b.title)
+  const start = (page - 1) * limit
+  const paginated = sorted.slice(start, start + limit)
+  const totalPages = Math.ceil(filtered.length / limit)
+
+  const handlePrev = () => {
+    if (page > 1) dispatch(setPage(page - 1))
   }
-  return b.title.localeCompare(a.title)
-})
 
-const start = (page - 1) * limit
+  const handleNext = () => {
+    if (page < totalPages) dispatch(setPage(page + 1))
+  }
 
-
-const totalPages = Math.ceil(filtered.length / limit)
-const paginated = sorted.slice(start, start + limit)
+  const handleSortClick = () => {
+    dispatch(toggleSortOrder())
+  }
 
   return (
     <>
-	 <button onClick={() => dispatch(toggleSortOrder())}>
-  		Сортировка: {sortOrder === 'asc' ? 'A → Z' : 'Z → A'}
-	 </button>
+      <button onClick={handleSortClick}>
+        Сортировка: {sortOrder === 'asc' ? 'A → Z' : 'Z → A'}
+      </button>
+
       <div className={styles.grid}>
         {paginated.map((product) => (
           <ProductCard key={product.id} product={product} />
         ))}
       </div>
 
-      <div className={styles.pagination}>
-        {Array.from({ length: totalPages }).map((_, index) => (
-          <button
-            key={index}
-            onClick={() => dispatch(setPage(index + 1))}
-            className={page === index + 1 ? styles.active : ''}
-          >
-            {index + 1}
-          </button>
-        ))}
-      </div>
+      <Pagination page={page} totalPages={totalPages} onPrev={handlePrev} onNext={handleNext} />
     </>
   )
 }
