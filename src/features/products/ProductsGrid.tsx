@@ -6,17 +6,19 @@ import styles from './ProductsGrid.module.scss'
 
 const ProductsGrid = () => {
   const dispatch = useAppDispatch()
-  const { items, page, limit, sortOrder } = useAppSelector((state) => state.products)
-  const category = useAppSelector((state) => state.filters.category)
 
-  const filtered = items.filter((p) => p.category === category)
-  const sorted = [...filtered].sort((a, b) =>
-    sortOrder === 'asc' ? a.title.localeCompare(b.title) : b.title.localeCompare(a.title)
-  )
+ const { items, page, limit, sortOrder, status, error, total } = useAppSelector(state => state.products)
 
-  const start = (page - 1) * limit
-  const paginated = sorted.slice(start, start + limit)
-  const totalPages = Math.ceil(filtered.length / limit)
+
+  if (status === 'loading') {
+    return <div>Загрузка...</div>
+  }
+
+  if (status === 'failed') {
+    return <div>Ошибка: {error}</div>
+  }
+
+  const totalPages = Math.ceil(total / limit)
 
   const handlePrev = () => {
     if (page > 1) dispatch(setPage(page - 1))
@@ -37,14 +39,20 @@ const ProductsGrid = () => {
       </button>
 
       <div className={styles.grid}>
-        {paginated.map((product) => (
+        {items.map(product => (
           <ProductCard key={product.id} product={product} />
         ))}
       </div>
 
-      <Pagination page={page} totalPages={totalPages} onPrev={handlePrev} onNext={handleNext} />
+      <Pagination
+        page={page}
+        totalPages={totalPages}
+        onPrev={handlePrev}
+        onNext={handleNext}
+      />
     </>
   )
 }
 
 export default ProductsGrid
+

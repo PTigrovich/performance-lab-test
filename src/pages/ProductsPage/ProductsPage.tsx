@@ -1,47 +1,62 @@
 import { useEffect } from 'react'
 import { useAppDispatch, useAppSelector } from '../../app/hooks'
 import { useSearchParams } from 'react-router-dom'
+
 import FilterPanel from '../../features/filters/FilterPanel'
 import ProductsGrid from '../../features/products/ProductsGrid'
-import { setCategory } from '../../features/filters/filtersSlice'
-import { setPage } from '../../features/products/productsSlice'
-import { Category } from '../../entities/product/types'
-
-import { toggleCart } from '../../features/cart/cartSlice'
 import CartSidebar from '../../features/cart/CartSidebar'
+
+import { setCategory } from '../../features/filters/filtersSlice'
+import {
+  setPage,
+  fetchProducts,
+} from '../../features/products/productsSlice'
+import { toggleCart } from '../../features/cart/cartSlice'
+
+import { Category } from '../../entities/product/types'
 import styles from './ProductsPage.module.scss'
-
-
 
 const ProductsPage = () => {
   const dispatch = useAppDispatch()
   const [searchParams, setSearchParams] = useSearchParams()
 
   const category = useAppSelector(state => state.filters.category)
-  const page = useAppSelector(state => state.products.page)
+  const { page, limit, sortOrder } = useAppSelector(
+    state => state.products
+  )
 
-  const handleToggleCart = () => {
-    dispatch(toggleCart());
-  }
-
-  // Восстановление состояния из URL при заходе
+  /* восстановление из URL */
   useEffect(() => {
     const categoryFromUrl = searchParams.get('category') as Category | null
-    const pageFromUrl = parseInt(searchParams.get('page') || '1', 10)
+    const pageFromUrl = Number(searchParams.get('page') || 1)
 
     if (categoryFromUrl) dispatch(setCategory(categoryFromUrl))
     if (!isNaN(pageFromUrl)) dispatch(setPage(pageFromUrl))
   }, [dispatch, searchParams])
 
-  // Сброс страницы при смене категории
+  /* загрузка товаров */
   useEffect(() => {
-    dispatch(setPage(1))
-  }, [category, dispatch])
+    dispatch(
+      fetchProducts({
+        category,
+        page,
+        limit,
+        sortOrder,
+      })
+    )
+  }, [dispatch, category, page, limit, sortOrder])
 
-  // Синхронизация store -> URL
+  /* синхронизация store → URL */
   useEffect(() => {
-    setSearchParams({ category, page: String(page) })
+    setSearchParams({
+      category,
+      page: String(page),
+    })
   }, [category, page, setSearchParams])
+
+  const handleToggleCart = () => {
+    dispatch(toggleCart())
+  }
 
   return (
     <div className={styles.page}>
@@ -49,8 +64,8 @@ const ProductsPage = () => {
       <ProductsGrid />
 
       <button onClick={handleToggleCart}>
-  			Открыть корзину
-		</button>
+        Открыть корзину
+      </button>
 
       <CartSidebar />
     </div>
@@ -58,4 +73,3 @@ const ProductsPage = () => {
 }
 
 export default ProductsPage
-
