@@ -9,12 +9,16 @@ interface Props {
 
 const ProductCard = ({ product }: Props) => {
   const dispatch = useDispatch()
+  
+  const handleAddToCart = () => {
+  dispatch(addToCart(product))
+} 
 
   return (
     <div className={styles.card}>
       <h3>{product.title}</h3>
       <p>{product.price} ₽</p>
-      <button onClick={() => dispatch(addToCart(product))}>
+      <button onClick={handleAddToCart}>
         В корзину
       </button>
     </div>

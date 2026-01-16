@@ -1,4 +1,4 @@
-import { memo } from 'react'
+import { memo, useCallback } from 'react'
 import { useAppDispatch } from '../../app/hooks'
 import { removeFromCart } from './cartSlice'
 import styles from './CartSidebar.module.scss'
@@ -14,9 +14,9 @@ const CartItem = memo(
   ({ id, title, price, quantity }: CartItemProps) => {
     const dispatch = useAppDispatch()
 
-	const handleRemove = () => {
-    dispatch(removeFromCart(id))
-   }
+	const handleRemove = useCallback(() => {
+  dispatch(removeFromCart(id))
+}, [dispatch, id])
 
     return (
       <div className={styles.item}>
