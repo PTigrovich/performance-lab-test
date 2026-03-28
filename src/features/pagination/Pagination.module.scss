@@ -1,0 +1,20 @@
+.pagination {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  margin-top: 16px;
+}
+
+button {
+  padding: 6px 12px;
+  border: 1px solid #ccc;
+  background: white;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+button.active {
+  background: #6b5bff; // умеренный фиолетовый
+  color: white;
+  border-color: #6b5bff;
+}

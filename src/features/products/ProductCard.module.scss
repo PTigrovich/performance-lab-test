@@ -1,0 +1,37 @@
+.card {
+  background-color: var(--color-white);
+  border-radius: var(--border-radius);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+  transition: var(--transition);
+}
+
+.card:hover {
+  transform: translateY(-2px);
+}
+
+.title {
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.price {
+  color: var(--color-accent);
+  font-weight: 600;
+}
+
+.button {
+  margin-top: auto;
+  padding: 8px;
+  border-radius: var(--border-radius);
+  background-color: var(--color-accent);
+  color: var(--color-white);
+  transition: var(--transition);
+}
+
+.button:hover {
+  background-color: var(--color-accent-hover);
+}

@@ -1,0 +1,19 @@
+:root {
+  /* база */
+  --color-white: #ffffff;
+  --color-bg: #f7f7f9;
+  --color-gray-100: #f0f0f3;
+  --color-gray-300: #d1d1d6;
+  --color-gray-600: #6e6e73;
+  --color-text: #1d1d1f;
+
+  /* акцент  */
+  --color-accent: #6b5cff;
+  --color-accent-hover: #5a4de0;
+  --color-accent-soft: rgba(107, 92, 255, 0.1);
+
+  /* обводка */
+  --container-width: 1200px;
+  --border-radius: 12px;
+  --transition: 0.2s ease;
+}

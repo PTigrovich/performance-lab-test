@@ -1,0 +1,28 @@
+.panel {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+.panel button {
+  padding: 8px 16px;
+  border-radius: var(--border-radius);
+  background-color: var(--color-white);
+  border: 1px solid var(--color-gray-300);
+  color: var(--color-gray-600);
+  transition: var(--transition);
+}
+
+.panel button:hover {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+}
+
+.active {
+  background-color: var(--color-accent-soft);
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+}
+
+@media (max-width: 768px) { .page { padding: 16px 12px; } .panel { gap: 8px; } }
